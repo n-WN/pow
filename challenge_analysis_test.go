@@ -55,7 +55,7 @@ func TestSpecificChallengeAnalysis(t *testing.T) {
 		t.Errorf("Optimized: %s", optimizedSolution)
 		t.Errorf("Original:  %s", originalSolution)
 	} else {
-		fmt.Printf("✅ Both implementations produce identical results\n")
+		fmt.Printf("Both implementations produce identical results\n")
 	}
 	
 	// Verify solution is correct
@@ -65,7 +65,7 @@ func TestSpecificChallengeAnalysis(t *testing.T) {
 	} else if !valid {
 		t.Errorf("Solution is invalid")
 	} else {
-		fmt.Printf("✅ Solution is valid\n")
+		fmt.Printf("Solution is valid\n")
 	}
 }
 
@@ -120,7 +120,7 @@ func TestSpecificChallengePerformance(t *testing.T) {
 		
 		// If taking too long, break early
 		if elapsed > time.Second {
-			fmt.Printf("⚠️  Original implementation too slow, stopping after %d iterations\n", i+1)
+			fmt.Printf("Original implementation too slow, stopping after %d iterations\n", i+1)
 			break
 		}
 	}
@@ -145,9 +145,9 @@ func TestSpecificChallengePerformance(t *testing.T) {
 		fmt.Printf("Performance improvement: %.2fx\n", improvement)
 		
 		if improvement > 2 {
-			fmt.Printf("🚀 Significant performance improvement detected!\n")
+			fmt.Printf("Significant performance improvement detected!\n")
 		} else {
-			fmt.Printf("📊 Minimal performance difference (expected for non-edge cases)\n")
+			fmt.Printf("Minimal performance difference (expected for non-edge cases)\n")
 		}
 	}
 }
@@ -190,6 +190,6 @@ func TestDifficultyLevelAnalysis(t *testing.T) {
 	
 	// Estimate expected performance without optimizations
 	if difficulty > 100 {
-		fmt.Printf("⚠️  Without optimizations, this would take considerable time\n")
+		fmt.Printf("Without optimizations, this would take considerable time\n")
 	}
 }

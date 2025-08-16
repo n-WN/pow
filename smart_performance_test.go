@@ -28,7 +28,7 @@ func TestSpecificChallengePerformanceSmarter(t *testing.T) {
 		start := time.Now()
 		optimizedSolution = c.Solve()
 		optimizedTime = time.Since(start)
-		fmt.Printf("✅ Optimized completed in: %v\n", optimizedTime)
+		fmt.Printf("Optimized completed in: %v\n", optimizedTime)
 	}
 	
 	// Test original with timeout
@@ -50,27 +50,27 @@ func TestSpecificChallengePerformanceSmarter(t *testing.T) {
 	
 	select {
 	case <-done:
-		fmt.Printf("✅ Original completed in: %v\n", originalTime)
+		fmt.Printf("Original completed in: %v\n", originalTime)
 		
 		// Verify results match
 		if optimizedSolution != originalSolution {
-			t.Errorf("❌ Solutions don't match!")
+			t.Errorf("Solutions don't match!")
 		} else {
-			fmt.Printf("✅ Solutions match\n")
+			fmt.Printf("Solutions match\n")
 		}
 		
 		// Calculate improvement
 		if originalTime > 0 && optimizedTime > 0 {
 			improvement := float64(originalTime) / float64(optimizedTime)
-			fmt.Printf("🚀 Performance improvement: %.2fx\n", improvement)
+			fmt.Printf("Performance improvement: %.2fx\n", improvement)
 		}
 		
 	case <-ctx.Done():
-		fmt.Printf("⏰ Original implementation timed out after 30 seconds\n")
-		fmt.Printf("📊 Optimized vs Original comparison:\n")
+		fmt.Printf("Original implementation timed out after 30 seconds\n")
+		fmt.Printf("Optimized vs Original comparison:\n")
 		fmt.Printf("   Optimized: %v (completed)\n", optimizedTime)
 		fmt.Printf("   Original:  >30s (timed out)\n")
-		fmt.Printf("🚀 Performance improvement: >%.0fx\n", float64(30*time.Second)/float64(optimizedTime))
+		fmt.Printf("Performance improvement: >%.0fx\n", float64(30*time.Second)/float64(optimizedTime))
 	}
 }
 

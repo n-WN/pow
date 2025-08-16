@@ -25,8 +25,8 @@ func TestCycleDetection(t *testing.T) {
 			key := x.String()
 			if prevI, exists := seen[key]; exists {
 				cycleLength := i - prevI
-				fmt.Printf("  🔄 Cycle detected! Length: %d, starts at iteration %d\n", cycleLength, prevI)
-				fmt.Printf("  💡 Could optimize for difficulties >= %d\n", cycleLength)
+				fmt.Printf("  Cycle detected! Length: %d, starts at iteration %d\n", cycleLength, prevI)
+				fmt.Printf("  Could optimize for difficulties >= %d\n", cycleLength)
 				break
 			}
 			seen[key] = i
@@ -38,7 +38,7 @@ func TestCycleDetection(t *testing.T) {
 		}
 		
 		if len(seen) == maxIterations {
-			fmt.Printf("  ❌ No cycle found within %d iterations\n", maxIterations)
+			fmt.Printf("  No cycle found within %d iterations\n", maxIterations)
 		}
 	}
 }
@@ -123,9 +123,9 @@ func TestAdvancedOptimizations(t *testing.T) {
 		t.Errorf("Regular: %s", regularResult)
 		t.Errorf("Cycle:   %s", cycleResult)
 	} else {
-		fmt.Printf("  ✅ Results match\n")
+		fmt.Printf("  Results match\n")
 		improvement := float64(regularTime) / float64(cycleTime)
-		fmt.Printf("  📊 Improvement: %.2fx\n", improvement)
+		fmt.Printf("  Improvement: %.2fx\n", improvement)
 	}
 }
 
@@ -136,14 +136,14 @@ func TestPerformanceRecommendations(t *testing.T) {
 	fmt.Printf(`
 Based on the analysis of the specific challenge (d=90,000):
 
-🔍 CURRENT STATE:
+CURRENT STATE:
   - Challenge difficulty: 90,000 (very high)
   - Challenge value: regular (not edge case)
   - Current optimized time: ~55 seconds
   - Original time: >30 seconds (timed out)
   - Current optimizations effective for edge cases only
 
-💡 RECOMMENDED IMPROVEMENTS:
+RECOMMENDED IMPROVEMENTS:
 
 1. CYCLE DETECTION (High Impact for some values):
    - Detect when x returns to a previously seen value
@@ -165,13 +165,13 @@ Based on the analysis of the specific challenge (d=90,000):
    - Consider precomputation for common values
    - Investigate if the specific modulus (2^1279-1) has special properties
 
-🎯 NEXT STEPS:
+NEXT STEPS:
    1. Implement cycle detection as primary optimization
    2. Profile GMP operations to find bottlenecks  
    3. Research mathematical properties of the transformation
    4. Consider consulting cryptographic literature for similar functions
 
-⚠️  NOTE: For the specific challenge provided, improvements beyond edge cases
+NOTE: For the specific challenge provided, improvements beyond edge cases
     may be limited due to the cryptographic nature of the function.
 `)
 }
