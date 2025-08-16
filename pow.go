@@ -77,10 +77,66 @@ func (c *Challenge) String() string {
 // Solve solves the challenge and returns a solution proof that can be checked by Check.
 func (c *Challenge) Solve() string {
 	x := gmp.NewInt(0).Set(c.x) // dont mutate c.x
-	for i := uint32(0); i < c.d; i++ {
-		x.Exp(x, exp, mod)
-		x.Xor(x, one)
+	
+	// Fast path for edge cases (though rare in practice)
+	if x.Sign() == 0 {
+		// 0 -> 1 -> 0 -> 1 ... alternating pattern
+		if c.d%2 == 0 {
+			// Even number of iterations: 0 -> 1 -> 0 -> ... -> 0
+			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(gmp.NewInt(0).Bytes()))
+		} else {
+			// Odd number of iterations: 0 -> 1 -> 0 -> ... -> 1
+			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(one.Bytes()))
+		}
 	}
+	
+	if x.Cmp(one) == 0 {
+		// 1 -> 0 -> 1 -> 0 ... alternating pattern
+		if c.d%2 == 0 {
+			// Even number of iterations: 1 -> 0 -> 1 -> ... -> 1
+			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(one.Bytes()))
+		} else {
+			// Odd number of iterations: 1 -> 0 -> 1 -> ... -> 0
+			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(gmp.NewInt(0).Bytes()))
+		}
+	}
+	
+	// Optimization: Unroll loop for small difficulties to reduce loop overhead
+	if c.d <= 4 {
+		switch c.d {
+		case 1:
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+		case 2:
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+		case 3:
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+		case 4:
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+		}
+	} else {
+		// General case: perform the computation
+		for i := uint32(0); i < c.d; i++ {
+			x.Exp(x, exp, mod)
+			x.Xor(x, one)
+		}
+	}
+	
 	return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(x.Bytes()))
 }
 
@@ -102,10 +158,18 @@ func (c *Challenge) Check(s string) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("decode solution: %w", err)
 	}
+	
+	// Fast path for edge cases
+	if c.d == 0 {
+		return y.Cmp(c.x) == 0, nil
+	}
+	
+	// Apply the inverse transformation d times
 	for i := uint32(0); i < c.d; i++ {
 		y.Xor(y, one)
 		y.Exp(y, two, mod)
 	}
+	
 	x := gmp.NewInt(0).Set(c.x) // dont mutate c.x
 	if x.Cmp(y) == 0 {
 		return true, nil
