@@ -83,7 +83,7 @@ func (c *Challenge) Solve() string {
 		// 0 -> 1 -> 0 -> 1 ... alternating pattern
 		if c.d%2 == 0 {
 			// Even number of iterations: 0 -> 1 -> 0 -> ... -> 0
-			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString([]byte{0}))
+			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(gmp.NewInt(0).Bytes()))
 		} else {
 			// Odd number of iterations: 0 -> 1 -> 0 -> ... -> 1
 			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(one.Bytes()))
@@ -97,7 +97,7 @@ func (c *Challenge) Solve() string {
 			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(one.Bytes()))
 		} else {
 			// Odd number of iterations: 1 -> 0 -> 1 -> ... -> 0
-			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString([]byte{0}))
+			return fmt.Sprintf("%s.%s", version, base64.StdEncoding.EncodeToString(gmp.NewInt(0).Bytes()))
 		}
 	}
 	
